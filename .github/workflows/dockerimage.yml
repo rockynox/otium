@@ -16,5 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --tag leomaisonneuve/otium:lastest
+    - name: Docker login
+      run: docker login -u leomaisonneuve -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Push docker on Docker Hub 
       run: docker push leomaisonneuve/otium:lastest
