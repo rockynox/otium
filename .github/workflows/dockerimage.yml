@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --tag leomaisonneuve/otium:lastest
     - name: Push docker on Docker Hub 
-      run: docker push leomaisonneuve/otium:dev
+      run: docker push leomaisonneuve/otium:lastest
