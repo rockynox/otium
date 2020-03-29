@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag leomaisonneuve/otium:lastest
+      run: docker build . --tag leomaisonneuve/otium:lastest
     - name: Push docker on Docker Hub 
       run: docker push leomaisonneuve/otium:dev
