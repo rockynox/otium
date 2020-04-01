@@ -15,7 +15,8 @@ git checkout "$target_branch"
 git reset --hard "${remote_name}/${main_branch}"
 
 npm run-script build
-git add -f "$build_dir"
+mv build/* .
+git add .
 
 git commit -m "updated GitHub Pages"
 if [ $? -ne 0 ]; then
