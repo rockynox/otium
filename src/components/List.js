@@ -46,8 +46,8 @@ class List extends Component {
 
   renderToDo() {
     const {data} = this.props;
-    const toDos = _.map(data, (value, key) => {
-      return <ListItem key={key} todoId={key} todo={value}/>;
+    const toDos = _.map(data, (todo, todoId) => {
+      return <ListItem key={todoId} todoId={todoId} todo={todo}/>;
     });
     if (!_.isEmpty(toDos)) {
       return toDos;
