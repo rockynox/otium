@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: Surge
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: "Build and deploy on gitHub pages"
+    name: "Build and deploy on Surge"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -16,7 +16,6 @@ jobs:
           node-version: 12
       - name: Install dependancies
         run: npm install
-      - name: Build and deploy
-        run: ./deploy/deploy_pages
-        env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Install surge and fire deployment
+      - run: npm install -g surge
+      - run: surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
