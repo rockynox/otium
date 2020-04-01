@@ -16,6 +16,8 @@ jobs:
           node-version: 12
       - name: Install dependancies
         run: npm install
+      - name: Build application
+        run: npm run-script build
       - name: Install surge and fire deployment
         run: npm install -g surge
       - run: surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
