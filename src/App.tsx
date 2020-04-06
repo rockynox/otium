@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import {List} from "./components/List";
+import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
+// @ts-ignore
+import {Button, Modal} from "react-materialize";
 
 
 const customHistory = createBrowserHistory();
@@ -35,14 +37,24 @@ export default class App extends Component {
     }
 }
 
-function Home() {
-    return <div className="container">
-        <List/>
-    </div>;
-}
-
 function About() {
-    return <h2>About</h2>;
+    return <div>
+        <Button
+            className="modal-trigger"
+            href="#modal1"
+            node="button"
+        >
+            Show Modal
+        </Button>
+        <Modal
+            bottomSheet={false}
+            fixedFooter={false}
+            header="Modal Header"
+            id="modal1"
+        >
+            Lorem ipsum dolor sit amet
+        </Modal>
+    </div>;
 }
 
 function Users() {

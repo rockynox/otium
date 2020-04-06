@@ -13,7 +13,8 @@ export class ItemComponent extends Component<ItemProps, {}> {
 
 
     removeItem = (itemId: string) => {
-        itemsDatabaseReference.child(itemId).remove();
+        itemsDatabaseReference.child(itemId).remove()
+            .catch((error) => console.error("Fail to delete item. Detail: " + error));
     };
 
     render() {

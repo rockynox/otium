@@ -1,4 +1,6 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
+import "firebase/analytics";
+import "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBvsWFh1ObECBcMXLhCoibc87BDSFEsZIE",
@@ -14,5 +16,5 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 const databaseRef = firebase.database().ref();
-export const todosRef = databaseRef.child("todos");
+
 export const itemsDatabaseReference = databaseRef.child("items");

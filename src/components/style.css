@@ -25,3 +25,7 @@
 input#newItem:active {
     border-bottom: 1px solid dodgerblue !important;
 }
+
+.modalButton {
+    margin: 6px 6px !important;
+}
