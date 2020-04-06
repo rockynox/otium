@@ -31,16 +31,16 @@ export class List extends Component {
         const {showForm, formValue} = this.state;
         if (showForm) {
             return (
-                <div id="todo-add-form" className="col s10 offset-s1">
+                <div id="add-form" className="col s10 offset-s1">
                     <form onSubmit={this.formSubmit}>
                         <div className="input-field">
                             <input
                                 value={formValue}
                                 onChange={this.inputChange}
-                                id="toDoNext"
+                                id="newItem"
                                 type="text"
                             />
-                            <label htmlFor="toDoNext">What Next?</label>
+                            <label htmlFor="newItem">New item title</label>
                         </div>
                     </form>
                 </div>
@@ -58,7 +58,7 @@ export class List extends Component {
         }
         return (
             <div className="col s10 offset-s1 center-align">
-                <h4>You have no more things ToDo!</h4>
+                <h4>You have no more item to see !</h4>
             </div>
         );
     }
@@ -72,7 +72,7 @@ export class List extends Component {
     render() {
         const {showForm} = this.state;
         return (
-            <div className="to-do-list-container">
+            <div className="list-container">
                 <div className="row">
                     {this.renderAddItemForm()}
                     {this.renderItems()}

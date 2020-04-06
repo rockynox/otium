@@ -19,14 +19,15 @@ export class ItemComponent extends Component<ItemProps, {}> {
     render() {
         const {itemId, item} = this.props;
         return (
-            <div key="toDoName" className="col s10 offset-s1 to-do-list-item black">
+            <div key="itemTitle" className="col s10 offset-s1 list-item black"
+                 onClick={() => console.log(item.title + " clicked!")}>
                 <h4>
                     {item.title}
                     <span
                         onClick={() => this.removeItem(itemId)}
-                        className="complete-todo-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn"
+                        className="complete-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn"
                     >
-            <i className="large material-icons">Done</i>
+            <i className="large material-icons">Remove</i>
           </span>
                 </h4>
             </div>
