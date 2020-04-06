@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import _ from "lodash";
 import "./style.css";
 import {itemsDatabaseReference} from "../firebase";
-import {ItemComponent} from "./ItemComponent";
+import {ItemListComponent} from "./ItemListComponent";
 import {Item} from "../types/Item";
 import {AddItemModal} from "./AddItemModal";
 
@@ -16,7 +16,6 @@ export class Home extends Component {
     componentDidMount() {
         this.itemDatabaseSubscription = itemsDatabaseReference.on("value", (snapshot: { val: any }) => {
             this.setState({items: snapshot.val()});
-            console.log(snapshot.val());
         });
     }
 
@@ -27,7 +26,7 @@ export class Home extends Component {
     renderItems() {
         const {items} = this.state;
         const itemList = _.map(items, (item: Item, itemId: string) => {
-            return <ItemComponent key={itemId} itemId={itemId} item={item}/>;
+            return <ItemListComponent key={itemId} itemId={itemId} item={item}/>;
         });
         if (!_.isEmpty(itemList)) {
             return itemList;
