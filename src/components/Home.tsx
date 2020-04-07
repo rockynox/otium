@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import _ from "lodash";
 import "./style.css";
-import {itemsDatabaseReference} from "../firebase";
+import {itemsDatabaseReference} from "../database/firebase";
 import {ItemListComponent} from "./ItemListComponent";
 import {Item} from "../types/Item";
 import {AddItemModal} from "./AddItemModal";

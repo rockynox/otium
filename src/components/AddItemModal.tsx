@@ -1,5 +1,5 @@
 import React from "react";
-import {itemsDatabaseReference} from "../firebase";
+import {itemsDatabaseReference} from "../database/firebase";
 import {Item} from "../types/Item";
 
 const display = {
@@ -45,9 +45,7 @@ export class AddItemModal extends React.Component {
                     <div className="modal-content">
                         <h4>New item</h4>
                         <div id="add-form" className="col s10 offset-s1">
-                            <form onSubmit={e => {
-                                e.preventDefault();
-                            }}>
+                            <form onSubmit={this.formSubmit}>
                                 <div className="input-field">
                                     <input
                                         value={formValue}

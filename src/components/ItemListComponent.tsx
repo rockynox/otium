@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Item} from "../types/Item";
-import {itemsDatabaseReference} from "../firebase";
-import {Link} from "react-router-dom";
+import {itemsDatabaseReference} from "../database/firebase";
 
 
 type ItemProps = {
@@ -21,7 +20,6 @@ export class ItemListComponent extends Component<ItemProps, {}> {
     render() {
         const {itemId, item} = this.props;
         return (
-            <Link to={"/item/" + itemId}>
                 <div key="itemTitle" className="col s10 offset-s1 list-item black"
                      onClick={() => console.log(item.title + " clicked!")}>
                     <h4>
@@ -34,7 +32,6 @@ export class ItemListComponent extends Component<ItemProps, {}> {
                     </span>
                     </h4>
                 </div>
-            </Link>
         );
     }
 }
