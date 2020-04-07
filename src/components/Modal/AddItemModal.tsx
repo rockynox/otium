@@ -1,6 +1,6 @@
 import React from "react";
-import {itemsDatabaseReference} from "../database/firebase";
-import {Item} from "../types/Item";
+import {Item} from "../../types/Item";
+import {databaseReference} from "../../database/firebase";
 
 export class AddItemModal extends React.Component {
     state = {
@@ -18,7 +18,7 @@ export class AddItemModal extends React.Component {
     };
 
     addItem = async (newItem: Item) => {
-        itemsDatabaseReference.push().set(newItem)
+        databaseReference.items.push().set(newItem)
             .catch(() => "Fail to add item: " + newItem.title);
     };
 

@@ -3,7 +3,7 @@ import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {ItemView} from "./components/ItemView";
-import {SelectUserModal} from "./components/SelectUserModal";
+import {SelectUserModal} from "./components/Modal/SelectUserModal";
 import {User} from "./types/User";
 
 
@@ -42,14 +42,15 @@ export const App = () => {
                         <li>
                             <Link to="/users">Users</Link>
                         </li>
-                        <li className="user-indicator">
+                        {user ? <li className="user-indicator">
                             <div>
                                 Connected user
                             </div>
                             <div>
                                 {user?.name}
                             </div>
-                        </li>
+                        </li> : null}
+
                     </ul>
                 </nav>
                 {renderBody()}

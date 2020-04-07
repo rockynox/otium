@@ -13,18 +13,21 @@ const firebaseConfig = {
     measurementId: "G-EVPJKBZ4QH"
 };
 
-let itemsDatabase;
+let items;
+let users;
 
-if (process.env.NODE_ENV === "development") {
-    itemsDatabase = new ItemsDatabaseReferenceMock();
+if (process.env.NODE_ENV !== "development") {
+    items = new ItemsDatabaseReferenceMock();
+    users = new ItemsDatabaseReferenceMock();
 } else {
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
     const databaseRef = firebase.database().ref();
 
-    itemsDatabase = databaseRef.child("items");
+    items = databaseRef.child("items");
+    users = databaseRef.child("users");
 }
 
-export const itemsDatabaseReference = itemsDatabase;
+export const databaseReference = {items, users};
 

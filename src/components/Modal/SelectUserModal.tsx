@@ -2,7 +2,7 @@ import React, {useState} from "react";
 // @ts-ignore
 import {Select} from "react-materialize";
 import _ from "lodash";
-import {User} from "../types/User";
+import {User} from "../../types/User";
 
 type SelectUserModalProps = {
     setUser: any,

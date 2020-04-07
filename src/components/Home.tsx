@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import _ from "lodash";
 import "./style.css";
-import {itemsDatabaseReference} from "../database/firebase";
+import {databaseReference} from "../database/firebase";
 import {ItemList} from "./ItemList";
 import {Item} from "../types/Item";
-import {AddItemModal} from "./AddItemModal";
+import {AddItemModal} from "./Modal/AddItemModal";
 
 export class Home extends Component {
     state = {
@@ -14,13 +14,13 @@ export class Home extends Component {
     itemDatabaseSubscription: any;
 
     componentDidMount() {
-        this.itemDatabaseSubscription = itemsDatabaseReference.on("value", (snapshot: { val: any }) => {
+        this.itemDatabaseSubscription = databaseReference.items.on("value", (snapshot: { val: any }) => {
             this.setState({items: snapshot.val()});
         });
     }
 
     componentWillUnmount(): void {
-        itemsDatabaseReference.off("value", this.itemDatabaseSubscription);
+        databaseReference.items.off("value", this.itemDatabaseSubscription);
     }
 
     renderItems() {
