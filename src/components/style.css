@@ -35,3 +35,15 @@ input#newItem:active {
     margin-right: 2em;
     line-height: 2;
 }
+
+.modal {
+    display: block;
+}
+
+.welcome-modal {
+    margin-top: 10em;
+}
+
+.add-item-modal {
+    z-index: 2;
+}

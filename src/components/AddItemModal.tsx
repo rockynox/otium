@@ -2,13 +2,6 @@ import React from "react";
 import {itemsDatabaseReference} from "../database/firebase";
 import {Item} from "../types/Item";
 
-const display = {
-    display: "block"
-};
-const hide = {
-    display: "none"
-};
-
 export class AddItemModal extends React.Component {
     state = {
         showModal: false,
@@ -41,7 +34,7 @@ export class AddItemModal extends React.Component {
         const {showModal, formValue} = this.state;
         if (showModal) {
             return (
-                <div className="modal" style={showModal ? display : hide}>
+                <div className="modal add-item-modal">
                     <div className="modal-content">
                         <h4>New item</h4>
                         <div id="add-form" className="col s10 offset-s1">

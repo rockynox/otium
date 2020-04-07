@@ -4,13 +4,14 @@ import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {ItemView} from "./components/ItemView";
 import {SelectUserModal} from "./components/SelectUserModal";
+import {User} from "./types/User";
 
 
 const customHistory = createBrowserHistory();
 
 export const App = () => {
 
-    const [user, setUser] = useState("Aline");
+    const [user, setUser] = useState<User | null>(null);
 
     const renderBody = () => {
         if (!user) {
@@ -46,7 +47,7 @@ export const App = () => {
                                 Connected user
                             </div>
                             <div>
-                                {user}
+                                {user?.name}
                             </div>
                         </li>
                     </ul>
