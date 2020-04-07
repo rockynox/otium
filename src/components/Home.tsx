@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import _ from "lodash";
 import "./style.css";
 import {itemsDatabaseReference} from "../database/firebase";
-import {ItemListComponent} from "./ItemListComponent";
+import {ItemList} from "./ItemList";
 import {Item} from "../types/Item";
 import {AddItemModal} from "./AddItemModal";
 
@@ -26,7 +26,7 @@ export class Home extends Component {
     renderItems() {
         const {items} = this.state;
         const itemList = _.map(items, (item: Item, itemId: string) => {
-            return <ItemListComponent key={itemId} itemId={itemId} item={item}/>;
+            return <ItemList key={itemId} itemId={itemId} item={item}/>;
         });
         if (!_.isEmpty(itemList)) {
             return itemList;
@@ -40,7 +40,7 @@ export class Home extends Component {
 
     render() {
         return (
-            <div className="containerr">
+            <div className="container">
                 <AddItemModal/>
                 <div className="list-container">
                     <div className="row">

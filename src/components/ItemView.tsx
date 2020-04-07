@@ -1,12 +1,12 @@
 import {useParams} from "react-router-dom";
 import React from "react";
 
-export function ItemView(value: { test: string }) {
+export const ItemView = (props: {}) => {
     let {id} = useParams();
 
     return (
         <div>
-            <h3>ID: {id} {value.test}</h3>
+            <h3>ID: {id}</h3>
         </div>
     );
-}
+};

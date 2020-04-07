@@ -29,3 +29,9 @@ input#newItem:active {
 .modalButton {
     margin: 6px 6px !important;
 }
+
+.user-indicator {
+    float: right;
+    margin-right: 2em;
+    line-height: 2;
+}
