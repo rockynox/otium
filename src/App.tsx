@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
@@ -12,6 +12,13 @@ const customHistory = createBrowserHistory();
 export const App = () => {
 
     const [user, setUser] = useState<User | null>(null);
+
+    //TODO: Remove that
+    useEffect(() => {
+        if (process.env.NODE_ENV === "development") {
+            setUser(new User("id", "Aline"));
+        }
+    }, []);
 
     const renderBody = () => {
         if (!user) {

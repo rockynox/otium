@@ -15,7 +15,6 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     const [users, setUsers] = useState<User | string>("");
     const loading = Object.keys(users).length === 0;
 
-
     useEffect(() => {
         databaseReference.users.once("value", (snapshot: { val: any }) => {
             setUsers(snapshot.val());
