@@ -16,8 +16,13 @@ jobs:
           node-version: 12
       - name: Install dependancies
         run: npm install
+      - name: Get current date
+        id: getDate
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d:%HH%MM')"
       - name: Build application
         run: npm run-script build
+        env:
+          REACT_APP_BUILT_DATE: ${{steps.getDate.outputs.date}}
       - name: Install surge and fire deployment
         run: npm install -g surge
       - run: surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}

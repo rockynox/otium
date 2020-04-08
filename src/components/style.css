@@ -48,3 +48,13 @@ input#newItem:active {
 .add-item-modal {
     z-index: 2;
 }
+
+.footer {
+    position: fixed;
+    left: 20px;
+    bottom: 10px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 997;
+    font-size: 0.6em;
+}

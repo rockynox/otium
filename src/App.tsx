@@ -33,6 +33,10 @@ export const App = () => {
             </Switch>
         );
     };
+    const renderVersionDate = (buildDate: string) =>
+        <div>
+            Version built on: {buildDate}
+        </div>;
 
     return (
         <div>
@@ -63,11 +67,10 @@ export const App = () => {
                     {renderBody()}
                 </div>
             </Router>
-            {/*<div className="page-footer">*/}
-            {/*    <p className="grey-text text-lighten-4">*/}
-            {/*        Fait en temps de confinement, mais avec amour.*/}
-            {/*    </p>*/}
-            {/*</div>*/}
+            <div className="footer">
+                Fait en temps de confinement, mais avec
+                amour. {process.env.REACT_APP_BUILT_DATE ? renderVersionDate(process.env.REACT_APP_BUILT_DATE) : ""}
+            </div>
         </div>
     );
 };
