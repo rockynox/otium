@@ -37,8 +37,7 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     const createUser = (newUserName: string): User => {
         const newUser = new UserCreationDto(newUserName);
         const newUserRef = databaseReference.users.push(newUser);
-        // @ts-ignore
-        const newUserId = newUserRef.key;
+        const newUserId = newUserRef.key as string;
         return new User(newUserId, newUserName);
     };
 

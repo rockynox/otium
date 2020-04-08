@@ -34,35 +34,41 @@ export const App = () => {
         );
     };
 
-
     return (
-        <Router history={customHistory}>
-            <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                        <li>
-                            <Link to="/users">Users</Link>
-                        </li>
-                        {user ? <li className="user-indicator">
-                            <div>
-                                Connected user
-                            </div>
-                            <div>
-                                {user?.name}
-                            </div>
-                        </li> : null}
+        <div>
+            <Router history={customHistory}>
+                <div>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to="/">Home</Link>
+                            </li>
+                            <li>
+                                <Link to="/about">About</Link>
+                            </li>
+                            <li>
+                                <Link to="/users">Users</Link>
+                            </li>
+                            {user ? <li className="user-indicator">
+                                <div>
+                                    Connected user
+                                </div>
+                                <div>
+                                    {user?.name}
+                                </div>
+                            </li> : null}
 
-                    </ul>
-                </nav>
-                {renderBody()}
+                        </ul>
+                    </nav>
+                    {renderBody()}
+                </div>
+            </Router>
+            <div className="page-footer">
+                <p className="grey-text text-lighten-4">
+                    Fait en temps de confinement, mais avec amour.
+                </p>
             </div>
-        </Router>
+        </div>
     );
 };
 
