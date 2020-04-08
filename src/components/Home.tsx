@@ -4,7 +4,7 @@ import "./style.css";
 import {databaseReference} from "../database/firebase";
 import {ItemList} from "./ItemList";
 import {Item} from "../types/Item";
-import {AddItemModal} from "./Modal/AddItemModal";
+import {AddItemModal} from "./Modals/AddItemModal";
 
 export class Home extends Component {
     state = {

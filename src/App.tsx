@@ -3,7 +3,7 @@ import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {ItemView} from "./components/ItemView";
-import {SelectUserModal} from "./components/Modal/SelectUserModal";
+import {SelectUserModal} from "./components/Modals/SelectUserModal";
 import {User} from "./types/User";
 
 

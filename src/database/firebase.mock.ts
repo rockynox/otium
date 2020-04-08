@@ -1,5 +1,3 @@
-import {Item} from "../types/Item";
-
 export class ItemsDatabaseReferenceMock {
 
     items = {
@@ -18,10 +16,15 @@ export class ItemsDatabaseReferenceMock {
         console.log("Connected.");
         this.callback({val: () => this.items});
     };
+    once = (arg1: any, callback: any) => {
+        this.callback = callback;
+        console.log("Connected.");
+        this.callback({val: () => this.items});
+    };
 
     push = () => {
         return {
-            set: (item: Item) => new Promise((resolve, reject) => {
+            set: (item: any) => new Promise((resolve, reject) => {
                 const newId = -Object.keys(this.items).length - 1;
                 // @ts-ignore
                 this.items[newId] = item;

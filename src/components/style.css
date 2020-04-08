@@ -42,6 +42,7 @@ input#newItem:active {
 
 .welcome-modal {
     margin-top: 10em;
+    width: 30%;
 }
 
 .add-item-modal {
