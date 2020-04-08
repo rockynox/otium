@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/database";
-import {ItemsDatabaseReferenceMock} from "./firebase.mock";
+// import {ItemsDatabaseReferenceMock} from "./firebase.mock";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBvsWFh1ObECBcMXLhCoibc87BDSFEsZIE",
@@ -16,18 +16,18 @@ const firebaseConfig = {
 let items;
 let users;
 
-if (process.env.NODE_ENV !== "development") {
-    items = new ItemsDatabaseReferenceMock();
-    users = new ItemsDatabaseReferenceMock();
-} else {
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+// if (process.env.NODE_ENV === "development") {
+//     items = new ItemsDatabaseReferenceMock();
+//     users = new ItemsDatabaseReferenceMock();
+// } else {
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
-    const databaseRef = firebase.database().ref();
+const databaseRef = firebase.database().ref();
 
-    items = databaseRef.child("items");
-    users = databaseRef.child("users");
-}
+items = databaseRef.child("items");
+users = databaseRef.child("users");
+// }
 
 export const databaseReference = {items, users};
 
