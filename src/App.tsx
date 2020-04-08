@@ -63,11 +63,11 @@ export const App = () => {
                     {renderBody()}
                 </div>
             </Router>
-            <div className="page-footer">
-                <p className="grey-text text-lighten-4">
-                    Fait en temps de confinement, mais avec amour.
-                </p>
-            </div>
+            {/*<div className="page-footer">*/}
+            {/*    <p className="grey-text text-lighten-4">*/}
+            {/*        Fait en temps de confinement, mais avec amour.*/}
+            {/*    </p>*/}
+            {/*</div>*/}
         </div>
     );
 };
