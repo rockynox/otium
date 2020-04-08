@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-// @ts-ignore
-// import {Select} from "react-materialize";
-import {User} from "../../types/User";
+import {User, UserCreationDto} from "../../types/User";
 import {databaseReference} from "../../database/firebase";
 import {SelectComponent} from "../SelectComponent";
 
@@ -22,7 +20,7 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
         databaseReference.users.once("value", (snapshot: { val: any }) => {
             setUsers(snapshot.val());
         });
-    }, []);
+    });
 
     const handleTextChange = (event: any) => setNewUserName(event.target.value);
 
@@ -38,10 +36,11 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     };
 
     const createUser = (newUserName: string): User => {
-        const newUser = new User(newUserName);
-        databaseReference.users.push().set(newUser)
-            .catch(() => "Fail to push to database.");
-        return newUser;
+        const newUser = new UserCreationDto(newUserName);
+        const newUserRef = databaseReference.users.push(newUser);
+        // @ts-ignore
+        const newUserId = newUserRef.key;
+        return new User(newUserId, newUserName);
     };
 
     return (
