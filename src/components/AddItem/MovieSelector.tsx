@@ -50,6 +50,27 @@ export const MovieSelector = (props: MovieSelectorProps) => {
         }
     }, [open]);
 
+    const renderOption = (movieDBResult: MovieDBResult) => {
+        switch (movieDBResult.media_type) {
+            case "movie":
+                return (<div className="container">
+                    <div className="left">
+                        {movieDBResult.original_title}
+                    </div>
+                    <div className="right">
+                        <img src={"https://image.tmdb.org/t/p/w200" + movieDBResult.poster_path}
+                             className="movie-picture" alt="MoviePicture"/>
+                    </div>
+                </div>);
+            case "tv":
+                return (<div>
+                    {movieDBResult.name}
+                </div>);
+            default:
+                return (<div/>);
+        }
+    };
+
     return (
         <Autocomplete
             id="Film input"
@@ -60,9 +81,11 @@ export const MovieSelector = (props: MovieSelectorProps) => {
             onOpen={() => {
                 setOpen(true);
             }}
+            groupBy={(option: MovieDBResult) => option.media_type}
             onClose={() => {
                 setOpen(false);
             }}
+            filterOptions={(options: MovieDBResult[], state) => options.filter(movieDbResult => movieDbResult.media_type !== "person")}
             getOptionSelected={(option, value: MovieDBResult) => option.id === value.id}
             getOptionLabel={(option) => option.media_type === "movie" ? option.title : option.name}
             options={options}
@@ -75,6 +98,9 @@ export const MovieSelector = (props: MovieSelectorProps) => {
                     label="Entrer le nom de votre film, série, ..."
                 />
             )}
+            renderOption={(option: MovieDBResult, state) =>
+                renderOption(option)
+            }
         />
     );
 };

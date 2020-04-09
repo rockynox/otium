@@ -58,3 +58,11 @@ input#newItem:active {
     z-index: 997;
     font-size: 0.6em;
 }
+
+.item-card-audit-info {
+    font-size: 0.9em;
+}
+
+.movie-picture {
+    height: 70px;
+}

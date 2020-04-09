@@ -1,5 +1,5 @@
 // https://developers.themoviedb.org/3/search/multi-search : Object description
-interface Movie {
+export interface Movie {
     id: number;
     poster_path: string | null;
     adult: boolean | null;
@@ -7,9 +7,10 @@ interface Movie {
     overview: string | null;
     original_title: string;
     title: string;
+    release_date: string
 }
 
-interface TvShow {
+export interface TvShow {
     id: number;
     poster_path: string | null;
     adult: boolean | null;
@@ -19,7 +20,7 @@ interface TvShow {
     name: string;
 }
 
-interface Person {
+export interface Person {
     id: number;
     poster_path: string | null;
     adult: boolean;
