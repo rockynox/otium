@@ -1,10 +1,15 @@
 import React, {useState} from "react";
-import {Item} from "../../types/Item";
+import {Audit, Item} from "../../types/Item";
 import {databaseReference} from "../../database/firebase";
 import {MovieDBResult} from "../../types/theMovieDB";
 import {MovieSelector} from "./MovieSelector";
+import {User} from "../../types/User";
 
-export const AddItemModal = () => {
+interface AddItemModalProps {
+    currentUser: User
+}
+
+export const AddItemModal = (props: AddItemModalProps) => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [formValue, setFormValue] = useState<string>("");
@@ -29,18 +34,19 @@ export const AddItemModal = () => {
             return;
         }
         if (formValue) {
-            addItem(
-                {
-                    type: "simple",
-                    payload: {title: formValue}
-                });
+            const newItem = new Item(
+                "simple",
+                {title: formValue},
+                new Audit(props.currentUser.id, props.currentUser.name)
+            );
+            addItem(newItem);
             setFormValue("");
         } else if (selectedItem) {
-            addItem(
-                {
-                    type: "movie",
-                    payload: selectedItem
-                });
+            addItem(new Item(
+                "movie",
+                selectedItem,
+                new Audit(props.currentUser.id, props.currentUser.name)
+            ));
         }
         event.preventDefault();
         setShowModal(!showModal);

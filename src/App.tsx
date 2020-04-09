@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
@@ -11,25 +11,25 @@ const customHistory = createBrowserHistory();
 
 export const App = () => {
 
-    const [user, setUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
 
     //TODO: Remove that
-    useEffect(() => {
-        if (process.env.NODE_ENV === "development") {
-            setUser(new User("id", "Aline"));
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (process.env.NODE_ENV === "development") {
+    //         setCurrentUser(new User("id", "Aline"));
+    //     }
+    // }, []);
 
     const renderBody = () => {
-        if (!user) {
-            return <SelectUserModal setUser={setUser}/>;
+        if (!currentUser) {
+            return <SelectUserModal setCurrentUser={setCurrentUser}/>;
         }
         return (
             <Switch>
                 <Route path="/about" component={About}/>
                 <Route path="/users" component={Users}/>
                 <Route path="/item/:id" children={<ItemView/>}/>
-                <Route path="/" component={Home}/>
+                <Route path="/" children={<Home currentUser={currentUser}/>}/>
             </Switch>
         );
     };
@@ -53,12 +53,12 @@ export const App = () => {
                             <li>
                                 <Link to="/users">Users</Link>
                             </li>
-                            {user ? <li className="user-indicator">
+                            {currentUser ? <li className="user-indicator">
                                 <div>
                                     Connected user
                                 </div>
                                 <div>
-                                    {user?.name}
+                                    {currentUser?.name}
                                 </div>
                             </li> : null}
 

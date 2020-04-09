@@ -5,8 +5,9 @@ import {databaseReference} from "../database/firebase";
 import {ItemList} from "./ItemList";
 import {Item} from "../types/Item";
 import {AddItemModal} from "./AddItem/AddItemModal";
+import {User} from "../types/User";
 
-export class Home extends Component {
+export class Home extends Component<{ currentUser: User }> {
     state = {
         items: []
     };
@@ -41,7 +42,7 @@ export class Home extends Component {
     render() {
         return (
             <div className="container">
-                <AddItemModal/>
+                <AddItemModal currentUser={this.props.currentUser}/>
                 <div className="list-container">
                     <div className="row">
                         {this.renderItems()}

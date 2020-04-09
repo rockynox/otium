@@ -5,19 +5,23 @@ import {SelectComponent} from "../SelectComponent";
 
 
 type SelectUserModalProps = {
-    setUser: any,
+    setCurrentUser: (user: User) => void,
 }
 
 export const SelectUserModal = (props: SelectUserModalProps) => {
 
     const [newUserName, setNewUserName] = useState("");
-    const [selectedUser, setSelectedUser] = useState<User | "">("");
-    const [users, setUsers] = useState<User | string>("");
+    const [selectedUser, setSelectedUser] = useState<User>(new User("", ""));
+    const [users, setUsers] = useState<User[]>([]);
     const loading = Object.keys(users).length === 0;
 
     useEffect(() => {
         databaseReference.users.once("value", (snapshot: { val: any }) => {
-            setUsers(snapshot.val());
+            const users: User[] = Object.entries(snapshot.val()).map((entry) => {
+                const [id, userWithoutId] = entry as [string, User];
+                return {id: id, name: userWithoutId.name} as User;
+            });
+            setUsers(users);
         });
     });
 
@@ -25,11 +29,10 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
 
     const handleSubmit = () => {
         if (selectedUser) {
-            // @ts-ignore
-            props.setUser(users[selectedUser]);
+            props.setCurrentUser(selectedUser);
             return;
         } else {
-            props.setUser(createUser(newUserName));
+            props.setCurrentUser(createUser(newUserName));
         }
 
     };
