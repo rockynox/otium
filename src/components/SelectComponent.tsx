@@ -7,7 +7,7 @@ import {User} from "../types/User";
 
 type SelectComponentProps = {
     setSelectedUser: (selectedUser: User) => void,
-    selectedUser: User
+    selectedUser: User | undefined
     users: User[]
 }
 
@@ -32,7 +32,7 @@ export const SelectComponent = (props: SelectComponentProps) => {
             <Select
                 id="Select-9"
                 onChange={handleSelectChange}
-                value={props.selectedUser.id}
+                value={props.selectedUser?.id || ""}
             >
                 <option disabled value="" key="">
                     Choisisser votre nom

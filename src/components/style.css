@@ -45,6 +45,16 @@ input#newItem:active {
     width: 30%;
 }
 
+.modal-content {
+    height: 400px;
+}
+
+.introduction-text {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-bottom: 30px;
+}
+
 .add-item-modal {
     z-index: 2;
 }
