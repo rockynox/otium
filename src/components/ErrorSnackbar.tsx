@@ -7,7 +7,7 @@ interface ErrorSnackbarProps {
     setOpen: (isOpen: boolean) => void
 }
 
-export default function ErrorSnackbar(props: ErrorSnackbarProps) {
+export const ErrorSnackbar = (props: ErrorSnackbarProps) => {
 
     const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
         if (reason === "clickaway") {

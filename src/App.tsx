@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Home} from "./components/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {ItemView} from "./components/ItemView";
-import {SelectUserModal} from "./components/Modals/SelectUserModal";
+import {SelectUserModal} from "./components/SelectUserModal";
 import {User} from "./types/User";
 
 
@@ -11,25 +11,25 @@ const customHistory = createBrowserHistory();
 
 export const App = () => {
 
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [connectedUser, setConnectedUser] = useState<User | null>(null);
 
     //TODO: Remove that
-    // useEffect(() => {
-    //     if (process.env.NODE_ENV === "development") {
-    //         setCurrentUser(new User("id", "Aline"));
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (process.env.NODE_ENV === "development") {
+            setConnectedUser(new User("id", "Aline"));
+        }
+    }, []);
 
     const renderBody = () => {
-        if (!currentUser) {
-            return <SelectUserModal setCurrentUser={setCurrentUser}/>;
+        if (!connectedUser) {
+            return <SelectUserModal setConnectedUser={setConnectedUser}/>;
         }
         return (
             <Switch>
                 <Route path="/about" component={About}/>
                 <Route path="/users" component={Users}/>
                 <Route path="/item/:id" children={<ItemView/>}/>
-                <Route path="/" children={<Home currentUser={currentUser}/>}/>
+                <Route path="/" children={<Home connectedUser={connectedUser}/>}/>
             </Switch>
         );
     };
@@ -53,12 +53,12 @@ export const App = () => {
                             <li>
                                 <Link to="/users">Users</Link>
                             </li>
-                            {currentUser ? <li className="user-indicator">
+                            {connectedUser ? <li className="user-indicator">
                                 <div>
                                     Connected user
                                 </div>
                                 <div>
-                                    {currentUser?.name}
+                                    {connectedUser?.name}
                                 </div>
                             </li> : null}
 

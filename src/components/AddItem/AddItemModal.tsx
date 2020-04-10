@@ -6,7 +6,7 @@ import {MovieSelector} from "./MovieSelector";
 import {User} from "../../types/User";
 
 interface AddItemModalProps {
-    currentUser: User
+    connectedUser: User
 }
 
 export const AddItemModal = (props: AddItemModalProps) => {
@@ -37,7 +37,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
             const newItem = new Item(
                 "simple",
                 {title: formValue},
-                new Audit(props.currentUser.id, props.currentUser.name)
+                new Audit(props.connectedUser.id, props.connectedUser.name)
             );
             addItem(newItem);
             setFormValue("");
@@ -45,7 +45,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
             addItem(new Item(
                 "movie",
                 selectedItem,
-                new Audit(props.currentUser.id, props.currentUser.name)
+                new Audit(props.connectedUser.id, props.connectedUser.name)
             ));
         }
         event.preventDefault();

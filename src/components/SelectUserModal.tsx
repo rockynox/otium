@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {User, UserCreationDto} from "../../types/User";
-import {databaseReference} from "../../database/firebase";
-import {SelectComponent} from "../SelectComponent";
-import ErrorSnackbar from "../ErrorSnackbar";
+import {User, UserCreationDto} from "../types/User";
+import {databaseReference} from "../database/firebase";
+import {SelectComponent} from "./SelectComponent";
+import {ErrorSnackbar} from "./ErrorSnackbar";
 
 
 type SelectUserModalProps = {
-    setCurrentUser: (user: User) => void,
+    setConnectedUser: (user: User) => void,
 }
 
 export const SelectUserModal = (props: SelectUserModalProps) => {
@@ -34,12 +34,12 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
             event.preventDefault();
         }
         if (selectedUser) {
-            props.setCurrentUser(selectedUser);
+            props.setConnectedUser(selectedUser);
             return;
         } else {
             createUser(newUserName)
                 .then(newUser => {
-                    props.setCurrentUser(newUser);
+                    props.setConnectedUser(newUser);
                 })
                 .catch(() => {
                     return;

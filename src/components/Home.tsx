@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import _ from "lodash";
 import "./style.css";
 import {databaseReference} from "../database/firebase";
 import {ItemList} from "./ItemList";
@@ -7,7 +6,11 @@ import {Item} from "../types/Item";
 import {AddItemModal} from "./AddItem/AddItemModal";
 import {User} from "../types/User";
 
-export class Home extends Component<{ currentUser: User }> {
+interface HomeProps {
+    connectedUser: User
+}
+
+export class Home extends Component<HomeProps> {
     state = {
         items: []
     };
@@ -16,7 +19,7 @@ export class Home extends Component<{ currentUser: User }> {
 
     componentDidMount() {
         this.itemDatabaseSubscription = databaseReference.items.on("value", (snapshot: { val: any }) => {
-            this.setState({items: snapshot.val()});
+            this.setState({items: snapshot.val() as Item[]});
         });
     }
 
@@ -26,10 +29,17 @@ export class Home extends Component<{ currentUser: User }> {
 
     renderItems() {
         const {items} = this.state;
-        const itemList = _.map(items, (item: Item, itemId: string) => {
-            return <ItemList key={itemId} itemId={itemId} item={item}/>;
-        });
-        if (!_.isEmpty(itemList)) {
+        const itemsObjects: Item[] = Object.entries(items)
+            .map(entry => {
+                const [id, itemWithoutId] = entry as [string, Item];
+                return {id: id, ...itemWithoutId} as Item;
+            });
+        const itemList = itemsObjects
+            .filter(item => !item.viewedBy || !item.viewedBy.find(user => user.id === this.props.connectedUser.id))
+            .map(item => {
+                return <ItemList key={item.id} itemId={item.id} item={item} connectedUser={this.props.connectedUser}/>;
+            });
+        if (itemList) {
             return itemList;
         }
         return (
@@ -42,7 +52,7 @@ export class Home extends Component<{ currentUser: User }> {
     render() {
         return (
             <div className="container">
-                <AddItemModal currentUser={this.props.currentUser}/>
+                <AddItemModal connectedUser={this.props.connectedUser}/>
                 <div className="list-container">
                     <div className="row">
                         {this.renderItems()}

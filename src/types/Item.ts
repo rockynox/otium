@@ -1,20 +1,22 @@
 import {MovieDBResult} from "./theMovieDB";
+import {User} from "./User";
 
 export class Item {
-
+    id: string = "";
     type: "movie" | "simple";
     payload: MovieDBResult | SimpleItem;
     audit: Audit;
+    viewedBy: User[] = [];
 
     constructor(type: "movie" | "simple",
                 payload: MovieDBResult | SimpleItem,
                 audit: Audit
     ) {
+        this.viewedBy = [];
         this.type = type;
         this.payload = payload;
         this.audit = audit;
     }
-
 }
 
 export class Audit {
