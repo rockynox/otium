@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {MovieDBResult} from "../../types/theMovieDB";
+import {MEDIA_TYPE, MovieDBResult} from "../../types/theMovieDB";
 
 interface MovieSelectorProps {
     handleSelectedItem: (selectedItem: MovieDBResult | null) => void
@@ -13,6 +13,14 @@ export const MovieSelector = (props: MovieSelectorProps) => {
     const [options, setOptions] = React.useState<MovieDBResult[]>([]);
     const [query, setQuery] = useState<string>("");
     const loading = open && options.length === 0;
+
+    function getSortByMediaType() {
+        return (result1: MovieDBResult, result2: MovieDBResult) => {
+            if (result1.media_type < result2.media_type) return -1;
+            if (result1.media_type > result2.media_type) return 1;
+            return 0;
+        };
+    }
 
     useEffect(() => {
         let active = true;
@@ -31,9 +39,10 @@ export const MovieSelector = (props: MovieSelectorProps) => {
                 .then(response => response.results as MovieDBResult[]);
             if (results) {
                 const moviesAndTvShows = results.filter((result: MovieDBResult) => {
-                    return result?.media_type !== "person";
+                    return result?.media_type !== MEDIA_TYPE.person;
                 });
                 if (active) {
+                    moviesAndTvShows.sort(getSortByMediaType());
                     setOptions(moviesAndTvShows);
                 }
             }
@@ -52,7 +61,7 @@ export const MovieSelector = (props: MovieSelectorProps) => {
 
     const renderOption = (movieDBResult: MovieDBResult) => {
         switch (movieDBResult.media_type) {
-            case "movie":
+            case MEDIA_TYPE.movie:
                 return (<div className="container">
                     <div className="left">
                         {movieDBResult.original_title}
@@ -62,7 +71,7 @@ export const MovieSelector = (props: MovieSelectorProps) => {
                              className="movie-picture" alt="MoviePicture"/>
                     </div>
                 </div>);
-            case "tv":
+            case MEDIA_TYPE.tv:
                 return (<div>
                     {movieDBResult.name}
                 </div>);
@@ -81,13 +90,13 @@ export const MovieSelector = (props: MovieSelectorProps) => {
             onOpen={() => {
                 setOpen(true);
             }}
-            groupBy={(option: MovieDBResult) => option.media_type}
+            groupBy={(option: MovieDBResult) => option.media_type.toString()}
             onClose={() => {
                 setOpen(false);
             }}
-            filterOptions={(options: MovieDBResult[], state) => options.filter(movieDbResult => movieDbResult.media_type !== "person")}
+            filterOptions={(options: MovieDBResult[], state) => options.filter(movieDbResult => movieDbResult.media_type !== MEDIA_TYPE.person)}
             getOptionSelected={(option, value: MovieDBResult) => option.id === value.id}
-            getOptionLabel={(option) => option.media_type === "movie" ? option.title : option.name}
+            getOptionLabel={(option) => option.media_type === MEDIA_TYPE.movie ? option.title : option.name}
             options={options}
             loading={loading}
             onInputChange={((event, value) => setQuery(value))}

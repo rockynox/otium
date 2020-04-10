@@ -49,11 +49,19 @@ export const ItemList = (props: ItemListProps) => {
         </div>);
     };
 
+    const isViewedByUser = (item: Item, connectedUser: User) => {
+        if (!item.viewedBy || item.viewedBy.includes(connectedUser)) {
+            return "black";
+        }
+        return "green";
+    };
+
     switch (props.item.type) {
         case "movie":
             const movieItem = props.item.payload as Movie;
             return (
-                <div key="itemTitle" className="col s10 offset-s1 list-item black"
+                <div key="itemTitle"
+                     className={"col s10 offset-s1 list-item " + isViewedByUser(props.item, props.connectedUser)}
                      onClick={() => handleItemClick(props.itemId)}>
                     <h4>
                         {movieItem.title} ({movieItem.release_date})

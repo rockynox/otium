@@ -35,7 +35,6 @@ export class Home extends Component<HomeProps> {
                 return {id: id, ...itemWithoutId} as Item;
             });
         const itemList = itemsObjects
-            .filter(item => !item.viewedBy || !item.viewedBy.find(user => user.id === this.props.connectedUser.id))
             .map(item => {
                 return <ItemList key={item.id} itemId={item.id} item={item} connectedUser={this.props.connectedUser}/>;
             });
