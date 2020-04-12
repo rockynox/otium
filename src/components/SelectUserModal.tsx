@@ -3,6 +3,7 @@ import {User, UserCreationDto} from "../types/User";
 import {databaseReference} from "../database/firebase";
 import {SelectComponent} from "./SelectComponent";
 import {ErrorSnackbar} from "./ErrorSnackbar";
+import {getSnapshotAsObjectArray} from "../database/databaseUtils";
 
 
 type SelectUserModalProps = {
@@ -18,12 +19,8 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     const [errorToasterOpen, setErrorToasterOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        databaseReference.users.once("value", (snapshot: { val: any }) => {
-            const users: User[] = Object.entries(snapshot.val()).map((entry) => {
-                const [id, userWithoutId] = entry as [string, User];
-                return {id: id, name: userWithoutId.name} as User;
-            });
-            setUsers(users);
+        databaseReference.users.once("value", (snapshot) => {
+            setUsers(getSnapshotAsObjectArray(snapshot) as User[]);
         });
     });
 
