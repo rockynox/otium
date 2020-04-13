@@ -19,9 +19,12 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     const [errorToasterOpen, setErrorToasterOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        databaseReference.users.once("value", (snapshot) => {
+        const databaseSubscription = databaseReference.users.on("value", (snapshot) => {
             setUsers(getSnapshotAsObjectArray(snapshot) as User[]);
         });
+        return () => {
+            databaseReference.users.off("value", databaseSubscription);
+        };
     });
 
     const handleTextChange = (event: any) => setNewUserName(event.target.value);

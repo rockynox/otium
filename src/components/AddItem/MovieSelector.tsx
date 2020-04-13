@@ -64,7 +64,7 @@ export const MovieSelector = (props: MovieSelectorProps) => {
             case MEDIA_TYPE.movie:
                 return (<div className="container">
                     <div className="left">
-                        {movieDBResult.original_title}
+                        {movieDBResult.title}
                     </div>
                     <div className="right">
                         <img src={"https://image.tmdb.org/t/p/w200" + movieDBResult.poster_path}

@@ -1,5 +1,5 @@
 import React from "react";
-import {Item, SimpleItem} from "../types/Item";
+import {Item} from "../types/Item";
 import {databaseReference} from "../database/firebase";
 import {useHistory} from "react-router-dom";
 import {Movie} from "../types/theMovieDB";
@@ -25,17 +25,15 @@ export const ItemList = (props: ItemListProps) => {
             .catch((error) => console.error("Fail to delete item. Detail: " + error));
     };
 
-    const handleHasViewed = (event: any, itemId: string, connectedUser: User, item: Item) => {
+    const toggleViewed = (event: any, itemId: string, connectedUser: User, item: Item) => {
         event.stopPropagation();
-        if (!item.viewedBy) {
-            item.viewedBy = [connectedUser];
-        } else if (!item.viewedBy.find((user) => user.id === connectedUser.id)) {
-            item.viewedBy = [...item.viewedBy, connectedUser];
+        let itemViewers = item.viewedBy ? item.viewedBy : [];
+        if (itemViewers.find((user) => user.id === connectedUser.id)) {
+            itemViewers = itemViewers.filter((user) => user.id !== connectedUser.id);
         } else {
-            return;
+            itemViewers = [...itemViewers, connectedUser];
         }
-        databaseReference.items.child(itemId).set(item);
-        console.log("Item: " + itemId + " has been viewed by " + connectedUser.name);
+        databaseReference.items.child(itemId + "/viewedBy").set(itemViewers);
     };
 
     const renderAuditInfo = () => {
@@ -49,48 +47,33 @@ export const ItemList = (props: ItemListProps) => {
         </div>);
     };
 
-    const isViewedByUser = (item: Item, connectedUser: User) => {
-        if (!item.viewedBy || item.viewedBy.includes(connectedUser)) {
-            return "black";
-        }
-        return "green";
-    };
+    const hasBeenViewedByUser = (item: Item, connectedUser: User) => item.viewedBy && !item.viewedBy.includes(connectedUser);
 
-    switch (props.item.type) {
-        case "movie":
-            const movieItem = props.item.payload as Movie;
-            return (
-                <div key="itemTitle"
-                     className={"col s10 offset-s1 list-item " + isViewedByUser(props.item, props.connectedUser)}
-                     onClick={() => handleItemClick(props.itemId)}>
-                    <h4>
-                        {movieItem.title} ({movieItem.release_date})
-                        <span onClick={(event) => handleRemoveItem(event, props.itemId)}
-                              className="complete-item waves-effect waves-light red text-darken-4 btn">
+    if (props.item.type === "movie") {
+        const movieItem = props.item.payload as Movie;
+        return (
+            <div key="itemTitle"
+                 className={"col s10 offset-s1 list-item " + (hasBeenViewedByUser(props.item, props.connectedUser) ? "green" : "black")}
+                 onClick={() => handleItemClick(props.itemId)}>
+                <h4>
+                    {movieItem.title} ({movieItem.release_date})
+                    <span onClick={(event) => handleRemoveItem(event, props.itemId)}
+                          className="complete-item waves-effect waves-light red text-darken-4 btn">
                             <i className="small material-icons">delete</i>
                         </span>
-                        <span onClick={(event) => handleHasViewed(event, props.itemId, props.connectedUser, props.item)}
-                              className="complete-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn">
-                            <i className="small material-icons">check_circle</i>
+                    <span onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
+                          className="complete-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn">
+                            <i className="small material-icons">{(hasBeenViewedByUser(props.item, props.connectedUser) ? "check_box" : "check_box_outline_blank")}</i>
                         </span>
-                    </h4>
-                    {renderAuditInfo()}
-                </div>
-            );
-        case "simple":
-            const simpleItem = props.item.payload as SimpleItem;
-            return (
-                <div key="itemTitle" className="col s10 offset-s1 list-item green"
-                     onClick={() => handleItemClick(props.itemId)}>
-                    <h4>
-                        {simpleItem.title}
-                        <span onClick={(event) => handleRemoveItem(event, props.itemId)}
-                              className="complete-item waves-effect waves-light red text-darken-4 btn">
-                            <i className="small material-icons">delete</i>
-                        </span>
-                    </h4>
-                    {renderAuditInfo()}
-                </div>
-            );
+                </h4>
+                {renderAuditInfo()}
+            </div>
+        );
+    } else {
+        return (
+            <div key="itemTitle" className="col s10 offset-s1 list-item green">
+                Unsupported item
+            </div>
+        );
     }
 };
