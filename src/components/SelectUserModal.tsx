@@ -16,7 +16,7 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
     const [selectedUser, setSelectedUser] = useState<User>();
     const [users, setUsers] = useState<User[]>([]);
     const loading = Object.keys(users).length === 0;
-    const [errorToasterOpen, setErrorToasterOpen] = useState<boolean>(false);
+    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState<boolean>(false);
 
     useEffect(() => {
         const databaseSubscription = databaseReference.users.on("value", (snapshot) => {
@@ -59,14 +59,14 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
                 throw new Error("No reference returned");
             })
             .catch(((reason) => {
-                setErrorToasterOpen(true);
+                setErrorSnackbarOpen(true);
                 throw new Error(reason);
             }));
     };
 
     return (
         <div className="modal welcome-modal">
-            <ErrorSnackbar open={errorToasterOpen} setOpen={setErrorToasterOpen}/>
+            <ErrorSnackbar open={errorSnackbarOpen} setOpen={setErrorSnackbarOpen}/>
             <div className="modal-content">
                 <h3>Bienvenue sur Otium !</h3>
                 <div className="introduction-text">

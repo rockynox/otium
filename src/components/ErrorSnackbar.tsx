@@ -25,4 +25,4 @@ export const ErrorSnackbar = (props: ErrorSnackbarProps) => {
             </Snackbar>
         </div>
     );
-}
+};

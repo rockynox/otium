@@ -4,6 +4,8 @@ import {databaseReference} from "../../database/firebase";
 import {MovieDBResult} from "../../types/theMovieDB";
 import {MovieSelector} from "./MovieSelector";
 import {User} from "../../types/User";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 interface AddItemModalProps {
     connectedUser: User
@@ -12,13 +14,8 @@ interface AddItemModalProps {
 export const AddItemModal = (props: AddItemModalProps) => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [formValue, setFormValue] = useState<string>("");
     const [selectedItem, setSelectedItem] = useState<MovieDBResult | null>();
-
-    const inputChange = (event: any) => {
-        setFormValue(event.target.value);
-        console.log(formValue);
-    };
+    const [isSuccessSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
 
     const handleSelectItem = (selectedItem: MovieDBResult | null) => {
         setSelectedItem(selectedItem);
@@ -30,26 +27,27 @@ export const AddItemModal = (props: AddItemModalProps) => {
     };
 
     const formSubmit = (event: any) => {
-        if (!formValue && !selectedItem) {
+        event.preventDefault();
+        if (selectedItem) {
+            addItem(
+                new Item(
+                    "movie",
+                    selectedItem,
+                    new Audit(props.connectedUser.id, props.connectedUser.name)
+                )
+            )
+                .then(() => {
+                    setShowModal(!showModal);
+                    setSuccessSnackbarOpen(true);
+                });
+        }
+    };
+
+    const handleCloseSnackbar = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === "clickaway") {
             return;
         }
-        if (formValue) {
-            const newItem = new Item(
-                "simple",
-                {title: formValue},
-                new Audit(props.connectedUser.id, props.connectedUser.name)
-            );
-            addItem(newItem);
-            setFormValue("");
-        } else if (selectedItem) {
-            addItem(new Item(
-                "movie",
-                selectedItem,
-                new Audit(props.connectedUser.id, props.connectedUser.name)
-            ));
-        }
-        event.preventDefault();
-        setShowModal(!showModal);
+        setSuccessSnackbarOpen(false);
     };
 
     const renderAddForm = () => {
@@ -57,26 +55,12 @@ export const AddItemModal = (props: AddItemModalProps) => {
             return (
                 <div className="modal add-item-modal">
                     <div className="modal-content">
-                        <h4>Enter le titre de l'objet a partager</h4>
-                        <div id="add-form" className="col s10 offset-s1">
-                            <form onSubmit={formSubmit}>
-                                <div className="input-field">
-                                    <input
-                                        value={formValue}
-                                        onChange={inputChange}
-                                        id="newItem"
-                                        type="text"
-                                    />
-                                    <label htmlFor="newItem">Item title</label>
-                                </div>
-                            </form>
-                        </div>
-                        <h4>Ou chercher un film ou une serie</h4>
+                        <h4>Ajouter un film ou une série</h4>
                         <MovieSelector handleSelectedItem={handleSelectItem}/>
                     </div>
                     <div className="modal-footer">
-                        <div className="btn modalButton" onClick={() => setShowModal(!showModal)}>Cancel</div>
-                        <div className="btn modalButton" onClick={formSubmit}>Add</div>
+                        <div className="btn modalButton red" onClick={() => setShowModal(!showModal)}>Annuler</div>
+                        <div className="btn modalButton" onClick={formSubmit}>Ajouter</div>
                     </div>
                 </div>
             );
@@ -85,6 +69,11 @@ export const AddItemModal = (props: AddItemModalProps) => {
 
     return (
         <div>
+            <Snackbar open={isSuccessSnackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
+                    Bien ajouté ! 😉
+                </MuiAlert>
+            </Snackbar>
             <div className="fixed-action-btn">
                 <div className="btn" onClick={() => setShowModal(!showModal)}>+</div>
             </div>
