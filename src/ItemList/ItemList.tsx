@@ -1,6 +1,5 @@
 import React from "react";
 import {Item} from "../types/Item";
-import {useHistory} from "react-router-dom";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
 import {databaseReference} from "../Database/firebaseConfiguration";
@@ -13,7 +12,7 @@ type ItemListProps = {
 
 export const ItemList = (props: ItemListProps) => {
 
-    let history = useHistory();
+    // let history = useHistory();
 
     const handleItemClick = (item: Item) => {
         // history.push("/item/" + itemId);

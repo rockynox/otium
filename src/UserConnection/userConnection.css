@@ -8,3 +8,7 @@
     font-size: 0.9em;
     margin-bottom: 30px;
 }
+
+.select-user {
+    min-width: 100% !important;
+}

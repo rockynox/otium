@@ -1,9 +1,9 @@
 import React from "react";
-// @ts-ignore
-import {Select} from "react-materialize";
-// @ts-ignore
-import _ from "lodash";
+import Select from "@material-ui/core/Select";
 import {User} from "../types/User";
+import {MenuItem} from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 type SelectComponentProps = {
     setSelectedUser: (selectedUser: User) => void,
@@ -15,30 +15,33 @@ export const UserSelector = (props: SelectComponentProps) => {
 
     const handleSelectChange = (event: any) => {
         const selectedUserId = event.target.value;
-        props.setSelectedUser(props.users[selectedUserId]);
+        const selectedUser = props.users.find(user => user.id === selectedUserId);
+        if (selectedUser) {
+            props.setSelectedUser(selectedUser);
+        }
     };
 
     const renderUserOptions = () => {
-        return _.map(props.users, (user: User, userId: string) => {
+        return props.users.map((user: User) => {
             return (
-                <option value={userId} key={userId}>
+                <MenuItem value={user.id} key={user.id}>
                     {user.name}
-                </option>
+                </MenuItem>
             );
         });
     };
     return (
         <div>
-            <Select
-                id="Select-9"
-                onChange={handleSelectChange}
-                value={props.selectedUser?.id || ""}
-            >
-                <option disabled value="" key="">
-                    Choisisser votre nom
-                </option>
-                {renderUserOptions()}
-            </Select>
+            <FormControl className="select-user">
+                <InputLabel id="demo-simple-select-label">Choisisser votre nom</InputLabel>
+                <Select
+                    id="demo-simple-select"
+                    onChange={handleSelectChange}
+                    value={props.selectedUser ? props.selectedUser.id : ""}
+                >
+                    {renderUserOptions()}
+                </Select>
+            </FormControl>
         </div>
     );
 };
