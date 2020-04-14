@@ -23,8 +23,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
     };
 
     const addItem = async (newItem: Item) => {
-        databaseReference.items.push().set(newItem)
-            .catch(() => "Fail to add item");
+        return databaseReference.items.push().set(newItem);
     };
 
     const formSubmit = (event: any) => {
@@ -40,6 +39,9 @@ export const AddItemModal = (props: AddItemModalProps) => {
                 .then(() => {
                     setShowModal(!showModal);
                     setSuccessSnackbarOpen(true);
+                })
+                .catch(() => {
+                    console.log("Can't add: " + selectedItem.id);
                 });
         }
     };

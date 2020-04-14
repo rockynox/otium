@@ -3,6 +3,11 @@ import {Item} from "../types/Item";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
 import {databaseReference} from "../Database/firebaseConfiguration";
+import CardContent from "@material-ui/core/CardContent";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import CardMedia from "@material-ui/core/CardMedia";
+import Card from "@material-ui/core/Card";
 
 type ItemListProps = {
     connectedUser: User
@@ -41,10 +46,11 @@ export const ItemList = (props: ItemListProps) => {
         if (!props.item.audit) {
             return;
         }
-        const creationDate = props.item.audit ? new Date(props.item.audit.createdDate).toUTCString() : "NA";
+        const options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+        const creationDate = props.item.audit ? new Date(props.item.audit.createdDate).toLocaleDateString("fr", options) : "NA";
         const creationName = props.item.audit?.creatorName || "";
         return (<div className="item-card-audit-info">
-            Added by {creationName} on {creationDate}
+            Conseillé par {creationName} le {creationDate}
         </div>);
     };
 
@@ -55,29 +61,63 @@ export const ItemList = (props: ItemListProps) => {
     if (props.item.type === "movie") {
         const movieItem = props.item.payload as Movie;
         return (
-            <div key="itemTitle"
-                 className={"col s10 offset-s1 list-item " + (hasBeenViewedByUser(props.item, props.connectedUser) ? "green" : "black")}
-                 onClick={() => handleItemClick(props.item)}>
-                <div className="row">
-                    <h4>
-                        {movieItem.title} ({movieItem.release_date})
-                    </h4>
-                    <span onClick={(event) => handleRemoveItem(event, props.itemId)}
-                          className="complete-item waves-effect waves-light red text-darken-4 btn">
-                            <i className="small material-icons">delete</i>
-                        </span>
-                    <span onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
-                          className="complete-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn">
-                            <i className="small material-icons">{(hasBeenViewedByUser(props.item, props.connectedUser) ? "check_box" : "check_box_outline_blank")}</i>
-                        </span>
-                </div>
-                {renderAuditInfo()}
-            </div>
-            // <ReviewCard2/>
+            // <div key="itemTitle"
+            //      className={"col s10 offset-s1 list-item " + (hasBeenViewedByUser(props.item, props.connectedUser) ? "green" : "black")}
+            //      onClick={() => handleItemClick(props.item)}>
+            // </div>
+            <Card className="card" elevation={2}>
+                <CardContent className="content">
+                    <Box mb={1}>
+                        <h3 className="heading">{movieItem.title}</h3>
+                        <span className="release-date">({movieItem.release_date})</span>
+                        {/*<Rating*/}
+                        {/*    name={"rating"}*/}
+                        {/*    value={2}*/}
+                        {/*    className="rating"*/}
+                        {/*    size={"small"}*/}
+                        {/*/>*/}
+                    </Box>
+                    <p className="body">
+                        {movieItem.overview || "Pas de résumé disponible."}
+                    </p>
+                    <div className="more-detail">
+                        Read more <span onClick={() => handleItemClick(props.item)} role="img"
+                                        aria-label="right-arrow">➡️</span>
+                    </div>
+                    <Divider className="divider light"/>
+                    <div>
+                        <div className="textFooter">
+                            {renderAuditInfo()}
+                        </div>
+                        <div>
+                            <i
+                                className="small material-icons"
+                                onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
+                            >
+                                {(hasBeenViewedByUser(props.item, props.connectedUser) ? "check_box" : "check_box_outline_blank")}
+                            </i>
+                            {props.item.audit.creatorId === props.connectedUser.id && (
+                                <i
+                                    className="small material-icons"
+                                    onClick={(event) => handleRemoveItem(event, props.itemId)}
+                                >
+                                    delete
+                                </i>
+                            )}
+                        </div>
+                    </div>
+                </CardContent>
+                <CardMedia
+                    className="media"
+                    image={
+                        "https://image.tmdb.org/t/p/w200" + movieItem.poster_path
+                    }
+                />
+            </Card>
         );
     } else {
         return (
-            <div key="itemTitle" className="col s10 offset-s1 list-item green">
+            <div key="itemTitle" className="col s10 offset-s1 green">
                 Unsupported item
             </div>
         );
