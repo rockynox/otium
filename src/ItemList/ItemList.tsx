@@ -1,9 +1,9 @@
 import React from "react";
 import {Item} from "../types/Item";
-import {databaseReference} from "../database/firebase";
 import {useHistory} from "react-router-dom";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
+import {databaseReference} from "../Database/firebaseConfiguration";
 
 type ItemListProps = {
     connectedUser: User
@@ -15,8 +15,10 @@ export const ItemList = (props: ItemListProps) => {
 
     let history = useHistory();
 
-    const handleItemClick = (itemId: string) => {
-        history.push("/item/" + itemId);
+    const handleItemClick = (item: Item) => {
+        // history.push("/item/" + itemId);
+        const movieItem = props.item.payload as Movie;
+        window.open("https://www.google.com/search?q=" + movieItem.title + " film", "_blank");
     };
 
     const handleRemoveItem = (event: any, itemId: string) => {
@@ -47,16 +49,20 @@ export const ItemList = (props: ItemListProps) => {
         </div>);
     };
 
-    const hasBeenViewedByUser = (item: Item, connectedUser: User) => item.viewedBy && !item.viewedBy.includes(connectedUser);
+    const hasBeenViewedByUser = (item: Item, connectedUser: User) => {
+        return item.viewedBy && item.viewedBy.find((user) => user.id === connectedUser.id);
+    };
 
     if (props.item.type === "movie") {
         const movieItem = props.item.payload as Movie;
         return (
             <div key="itemTitle"
                  className={"col s10 offset-s1 list-item " + (hasBeenViewedByUser(props.item, props.connectedUser) ? "green" : "black")}
-                 onClick={() => handleItemClick(props.itemId)}>
-                <h4>
-                    {movieItem.title} ({movieItem.release_date})
+                 onClick={() => handleItemClick(props.item)}>
+                <div className="row">
+                    <h4>
+                        {movieItem.title} ({movieItem.release_date})
+                    </h4>
                     <span onClick={(event) => handleRemoveItem(event, props.itemId)}
                           className="complete-item waves-effect waves-light red text-darken-4 btn">
                             <i className="small material-icons">delete</i>
@@ -65,9 +71,10 @@ export const ItemList = (props: ItemListProps) => {
                           className="complete-item waves-effect waves-light blue lighten-5 blue-text text-darken-4 btn">
                             <i className="small material-icons">{(hasBeenViewedByUser(props.item, props.connectedUser) ? "check_box" : "check_box_outline_blank")}</i>
                         </span>
-                </h4>
+                </div>
                 {renderAuditInfo()}
             </div>
+            // <ReviewCard2/>
         );
     } else {
         return (

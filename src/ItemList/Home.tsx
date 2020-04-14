@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import "./style.css";
-import {databaseReference} from "../database/firebase";
+import "./itemList.css";
+import {databaseReference} from "../Database/firebaseConfiguration";
 import {ItemList} from "./ItemList";
 import {Item} from "../types/Item";
-import {AddItemModal} from "./AddItem/AddItemModal";
 import {User} from "../types/User";
-import {getSnapshotAsObjectArray} from "../database/databaseUtils";
+import {getSnapshotAsObjectArray} from "../Database/databaseUtils";
+import {LinearProgress} from "@material-ui/core";
+import {AddItemModal} from "../AddItem/AddItemModal";
 
 interface HomeProps {
     connectedUser: User
@@ -14,10 +15,12 @@ interface HomeProps {
 export const Home = (props: HomeProps) => {
 
     const [items, setItems] = useState<Item[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const itemDatabaseSubscription = databaseReference.items.on("value", (snapshot) => {
             setItems(getSnapshotAsObjectArray(snapshot) as Item[]);
+            setIsLoading(false);
         });
         return () => {
             databaseReference.items.off("value", itemDatabaseSubscription);
@@ -31,20 +34,23 @@ export const Home = (props: HomeProps) => {
 
     const renderEmptyItem = () =>
         <div className="col s10 offset-s1 center-align">
-            <h4>You have no more item to see !</h4>
+            <h4>Vous avez tout vu !</h4>
         </div>;
 
     return (
         <div className="container">
             <AddItemModal connectedUser={props.connectedUser}/>
-            <div className="list-container">
-                <div className="row">
-                    {items.length ?
-                        renderItems() :
-                        renderEmptyItem()
-                    }
-                </div>
-            </div>
+            {isLoading ?
+                <LinearProgress/> :
+                (<div className="list-container">
+                    <div className="row">
+                        {items.length ?
+                            renderItems() :
+                            renderEmptyItem()
+                        }
+                    </div>
+                </div>)
+            }
         </div>
     );
 };

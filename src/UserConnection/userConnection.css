@@ -1,0 +1,10 @@
+.welcome-modal {
+    margin-top: 10em;
+    width: 30%;
+}
+
+.introduction-text {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-bottom: 30px;
+}

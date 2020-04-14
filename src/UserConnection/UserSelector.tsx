@@ -11,7 +11,7 @@ type SelectComponentProps = {
     users: User[]
 }
 
-export const SelectComponent = (props: SelectComponentProps) => {
+export const UserSelector = (props: SelectComponentProps) => {
 
     const handleSelectChange = (event: any) => {
         const selectedUserId = event.target.value;

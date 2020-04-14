@@ -1,0 +1,23 @@
+.list-container {
+    margin-top: 25px;
+}
+
+.list-item {
+    margin-top: 10px;
+    color: white;
+    transition: background-color 1s;
+}
+
+.list-item h4 {
+    padding-left: 25px;
+    padding-bottom: 5px;
+}
+
+.list-item:hover {
+    background-color: dodgerblue !important;
+}
+
+.complete-item {
+    float: right;
+    right: 20px;
+}

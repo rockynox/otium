@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {User, UserCreationDto} from "../types/User";
-import {databaseReference} from "../database/firebase";
-import {SelectComponent} from "./SelectComponent";
-import {ErrorSnackbar} from "./ErrorSnackbar";
-import {getSnapshotAsObjectArray} from "../database/databaseUtils";
+import {databaseReference} from "../Database/firebaseConfiguration";
+import {UserSelector} from "./UserSelector";
+import {ErrorSnackbar} from "../Common/ErrorSnackbar";
+import {getSnapshotAsObjectArray} from "../Database/databaseUtils";
+import {CircularProgress} from "@material-ui/core";
+import "./userConnection.css";
 
 
 type SelectUserModalProps = {
@@ -75,8 +77,8 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
                     studieux ou au divertissement.
                 </div>
                 {loading ?
-                    <div>Loading...</div>
-                    : <SelectComponent setSelectedUser={setSelectedUser} selectedUser={selectedUser} users={users}/>
+                    <CircularProgress/>
+                    : <UserSelector setSelectedUser={setSelectedUser} selectedUser={selectedUser} users={users}/>
                 }
 
                 <form onSubmit={handleSubmit}>
@@ -86,7 +88,7 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
                             onChange={handleTextChange}
                             type="text"
                         />
-                        <label>Ou enter le ici si vous êtes nouveau</label>
+                        <label>Ou entrer le ici si vous êtes nouveau</label>
                     </div>
                 </form>
 

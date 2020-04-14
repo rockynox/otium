@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {Home} from "./components/Home";
+import React, {useState} from "react";
+import {Home} from "./ItemList/Home";
 import {Link, Route, Router, Switch} from "react-router-dom";
 import {createBrowserHistory} from "history";
-import {ItemView} from "./components/ItemView";
-import {SelectUserModal} from "./components/SelectUserModal";
+import {ItemView} from "./ItemDetail/ItemView";
+import {SelectUserModal} from "./UserConnection/SelectUserModal";
 import {User} from "./types/User";
+import "./common.css";
 
 
 const customHistory = createBrowserHistory();
@@ -14,11 +15,11 @@ export const App = () => {
     const [connectedUser, setConnectedUser] = useState<User | null>(null);
 
     //TODO: Remove that
-    useEffect(() => {
-        if (process.env.NODE_ENV === "development") {
-            setConnectedUser(new User("id", "Aline"));
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (process.env.NODE_ENV === "development") {
+    //         setConnectedUser(new User("id", "Aline"));
+    //     }
+    // }, []);
 
     const renderBody = () => {
         if (!connectedUser) {
@@ -26,8 +27,6 @@ export const App = () => {
         }
         return (
             <Switch>
-                <Route path="/about" component={About}/>
-                <Route path="/users" component={Users}/>
                 <Route path="/item/:id" children={<ItemView/>}/>
                 <Route path="/" children={<Home connectedUser={connectedUser}/>}/>
             </Switch>
@@ -43,26 +42,18 @@ export const App = () => {
             <Router history={customHistory}>
                 <div>
                     <nav>
+                        <a href="#" className="brand-logo center">Otium</a>
                         <ul>
                             <li>
                                 <Link to="/">Home</Link>
                             </li>
-                            <li>
-                                <Link to="/about">About</Link>
-                            </li>
-                            <li>
-                                <Link to="/users">Users</Link>
-                            </li>
-                            {connectedUser ? <li className="user-indicator">
-                                <div>
-                                    Connected user
-                                </div>
-                                <div>
-                                    {connectedUser?.name}
-                                </div>
-                            </li> : null}
-
                         </ul>
+                        {connectedUser ? <div className="right user-indicator">
+                            <div>
+                                Connected user<br/>
+                                {connectedUser?.name}
+                            </div>
+                        </div> : null}
                     </nav>
                     {renderBody()}
                 </div>
@@ -74,11 +65,3 @@ export const App = () => {
         </div>
     );
 };
-
-function About() {
-    return <h2>About</h2>;
-}
-
-function Users() {
-    return <h2>Users</h2>;
-}

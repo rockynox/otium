@@ -1,11 +1,12 @@
 import React, {useState} from "react";
-import {Audit, Item} from "../../types/Item";
-import {databaseReference} from "../../database/firebase";
-import {MovieDBResult} from "../../types/theMovieDB";
+import {Audit, Item} from "../types/Item";
+import {databaseReference} from "../Database/firebaseConfiguration";
+import {MovieDBResult} from "../types/theMovieDB";
 import {MovieSelector} from "./MovieSelector";
-import {User} from "../../types/User";
+import {User} from "../types/User";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import "./addItem.css";
 
 interface AddItemModalProps {
     connectedUser: User

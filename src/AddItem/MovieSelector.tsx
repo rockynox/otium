@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {MEDIA_TYPE, MovieDBResult} from "../../types/theMovieDB";
+import {MEDIA_TYPE, MovieDBResult} from "../types/theMovieDB";
 
 interface MovieSelectorProps {
     handleSelectedItem: (selectedItem: MovieDBResult | null) => void
