@@ -51,7 +51,6 @@ export const SelectUserModal = (props: SelectUserModalProps) => {
 
     const createUser = async (newUserName: string): Promise<User> => {
         const newUser = new UserCreationDto(newUserName);
-        debugger
         return databaseReference.users.push(newUser)
             .then((newUserRef) => {
                 if (newUserRef) {
