@@ -32,10 +32,10 @@ export const UserSelector = (props: SelectComponentProps) => {
     };
     return (
         <div>
-            <FormControl className="select-user">
+            <FormControl className="user-selector">
                 <InputLabel id="demo-simple-select-label">Choisisser votre nom</InputLabel>
                 <Select
-                    id="demo-simple-select"
+                    id="simple-select"
                     onChange={handleSelectChange}
                     value={props.selectedUser ? props.selectedUser.id : ""}
                 >

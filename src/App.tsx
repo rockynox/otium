@@ -42,18 +42,20 @@ export const App = () => {
             <Router history={customHistory}>
                 <div>
                     <nav>
-                        <a href="#" className="brand-logo center">Otium</a>
+                        <div className="brand-logo center">Otium</div>
                         <ul>
                             <li>
                                 <Link to="/">Home</Link>
                             </li>
                         </ul>
-                        {connectedUser ? <div className="right user-indicator">
-                            <div>
-                                Connected user<br/>
-                                {connectedUser?.name}
+                        {connectedUser && (
+                            <div className="right user-indicator">
+                                <div>
+                                    Connected user<br/>
+                                    {connectedUser?.name}
+                                </div>
                             </div>
-                        </div> : null}
+                        )}
                     </nav>
                     {renderBody()}
                 </div>

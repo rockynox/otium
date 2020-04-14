@@ -72,7 +72,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
         <div>
             <Snackbar open={isSuccessSnackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
-                    Bien ajouté ! 😉
+                    Bien ajouté ! <span role="img" aria-label="Smile">😉</span>
                 </MuiAlert>
             </Snackbar>
             <div className="fixed-action-btn">

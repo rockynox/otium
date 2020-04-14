@@ -9,6 +9,10 @@
     margin-bottom: 30px;
 }
 
-.select-user {
+.user-selector {
     min-width: 100% !important;
+}
+
+.MuiMenuItem-root {
+    padding-left: 10px;
 }
