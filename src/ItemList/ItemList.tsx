@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
+import {Button} from "@material-ui/core";
 
 type ItemListProps = {
     connectedUser: User
@@ -83,22 +84,36 @@ export const ItemList = (props: ItemListProps) => {
                     <div className="more-detail">
                         Read more <span onClick={() => handleItemClick(props.item)} role="img"
                                         aria-label="right-arrow">➡️</span>
+                        <div className="right">
+                            {renderAuditInfo()}
+                        </div>
                     </div>
                     <Divider className="divider light"/>
                     <div>
-                        <div className="textFooter">
-                            {renderAuditInfo()}
-                        </div>
                         <div>
-                            <i
-                                className="small material-icons"
-                                onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
-                            >
-                                {(hasBeenViewedByUser(props.item, props.connectedUser) ? "check_box" : "check_box_outline_blank")}
-                            </i>
+                            {(hasBeenViewedByUser(props.item, props.connectedUser) ?
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
+                                    >
+                                        Marquer comme vu
+                                    </Button>
+                                    : <div>
+                                        <span className="view-info">
+                                            Déjà vu ! <span role="img" aria-label="Smile">😉</span>
+                                        </span>
+                                        <span
+                                            className="cancel-view"
+                                            onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
+                                        >
+                                            (annuler)
+                                        </span>
+                                    </div>
+                            )}
                             {props.item.audit.creatorId === props.connectedUser.id && (
                                 <i
-                                    className="small material-icons"
+                                    className="small material-icons right"
                                     onClick={(event) => handleRemoveItem(event, props.itemId)}
                                 >
                                     delete

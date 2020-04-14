@@ -45,10 +45,6 @@
     margin-bottom: 10px !important;
 }
 
-.textFooter {
-    font-size: 14px
-}
-
 .icon {
     font-size: 1.2rem;
     vertical-align: bottom
@@ -63,3 +59,12 @@
 .more-detail {
     margin-bottom: 10px;
 }
+
+.view-info {
+    color: yellowgreen;
+}
+
+.cancel-view {
+    color: rgba(219, 112, 147, 0.53);;
+}
+

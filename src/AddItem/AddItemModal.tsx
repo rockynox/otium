@@ -58,7 +58,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
             return (
                 <div className="modal add-item-modal">
                     <div className="modal-content">
-                        <h4>Ajouter un film ou une série</h4>
+                        <h4>Ajouter un film</h4>
                         <MovieSelector handleSelectedItem={handleSelectItem}/>
                     </div>
                     <div className="modal-footer">
@@ -78,7 +78,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
                 </MuiAlert>
             </Snackbar>
             <div className="fixed-action-btn">
-                <div className="btn" onClick={() => setShowModal(!showModal)}>+</div>
+                <div className="btn" onClick={() => setShowModal(!showModal)}>Ajouter un film</div>
             </div>
             {renderAddForm()}
         </div>
