@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Item} from "../types/Item";
-import {databaseReference} from "../Database/firebaseConfiguration";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -17,10 +16,6 @@ interface ReviewItemModalProps {
 export const ReviewItemModal = (props: ReviewItemModalProps) => {
 
     const [isSuccessSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
-
-    const addItem = async (newItem: Item) => {
-        return databaseReference.items.push().set(newItem);
-    };
 
     const formSubmit = (event: any) => {
         event.preventDefault();
