@@ -14,15 +14,13 @@ type ItemListProps = {
     connectedUser: User
     itemId: string,
     item: Item
+    handleViewed: (item: Item) => void
 }
 
 export const ItemList = (props: ItemListProps) => {
 
-    // let history = useHistory();
-
     const handleItemClick = (item: Item) => {
-        // history.push("/item/" + itemId);
-        const movieItem = props.item.payload as Movie;
+        const movieItem = item.payload as Movie;
         window.open("https://www.google.com/search?q=" + movieItem.title + " film", "_blank");
     };
 
@@ -34,13 +32,7 @@ export const ItemList = (props: ItemListProps) => {
 
     const toggleViewed = (event: any, itemId: string, connectedUser: User, item: Item) => {
         event.stopPropagation();
-        let itemViewers = item.viewedBy ? item.viewedBy : [];
-        if (itemViewers.find((user) => user.id === connectedUser.id)) {
-            itemViewers = itemViewers.filter((user) => user.id !== connectedUser.id);
-        } else {
-            itemViewers = [...itemViewers, connectedUser];
-        }
-        databaseReference.items.child(itemId + "/viewedBy").set(itemViewers);
+        props.handleViewed(item);
     };
 
     const renderAuditInfo = () => {
@@ -62,10 +54,6 @@ export const ItemList = (props: ItemListProps) => {
     if (props.item.type === "movie") {
         const movieItem = props.item.payload as Movie;
         return (
-            // <div key="itemTitle"
-            //      className={"col s10 offset-s1 list-item " + (hasBeenViewedByUser(props.item, props.connectedUser) ? "green" : "black")}
-            //      onClick={() => handleItemClick(props.item)}>
-            // </div>
             <Card className="card" elevation={2}>
                 <CardContent className="content">
                     <Box mb={1}>
@@ -82,8 +70,8 @@ export const ItemList = (props: ItemListProps) => {
                         {movieItem.overview || "Pas de résumé disponible."}
                     </p>
                     <div className="more-detail">
-                        Read more <span onClick={() => handleItemClick(props.item)} role="img"
-                                        aria-label="right-arrow">➡️</span>
+                        En savoir plus <span onClick={() => handleItemClick(props.item)} role="img"
+                                             aria-label="right-arrow">➡️</span>
                         <div className="right">
                             {renderAuditInfo()}
                         </div>
@@ -92,14 +80,7 @@ export const ItemList = (props: ItemListProps) => {
                     <div>
                         <div>
                             {(hasBeenViewedByUser(props.item, props.connectedUser) ?
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
-                                    >
-                                        Marquer comme vu
-                                    </Button>
-                                    : <div>
+                                    <div>
                                         <span className="view-info">
                                             Déjà vu ! <span role="img" aria-label="Smile">😉</span>
                                         </span>
@@ -110,6 +91,13 @@ export const ItemList = (props: ItemListProps) => {
                                             (annuler)
                                         </span>
                                     </div>
+                                    : <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(event) => toggleViewed(event, props.itemId, props.connectedUser, props.item)}
+                                    >
+                                        Marquer comme vu
+                                    </Button>
                             )}
                             {props.item.audit.creatorId === props.connectedUser.id && (
                                 <i
