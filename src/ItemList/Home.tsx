@@ -33,11 +33,9 @@ export const Home = (props: HomeProps) => {
         let itemViewers = item.viewedBy ? item.viewedBy : [];
         if (itemViewers.find((user) => user.id === props.connectedUser.id)) {
             itemViewers = itemViewers.filter((user) => user.id !== props.connectedUser.id);
-            console.log("removed !");
         } else {
             itemViewers = [...itemViewers, props.connectedUser];
             setItemToReview(item);
-            console.log("Added !");
         }
         databaseReference.items.child(item.id + "/viewedBy").set(itemViewers);
     };

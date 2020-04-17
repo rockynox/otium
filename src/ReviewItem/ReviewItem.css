@@ -5,3 +5,13 @@
 .movie-picture {
     height: 70px;
 }
+
+.rating-stars {
+    display: flex;
+    align-items: center;
+}
+
+.MuiRating-label {
+    font-size: 2.5rem !important;
+    color: #ffb400 !important;
+}
