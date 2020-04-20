@@ -27,7 +27,7 @@ interface ReviewItemModalProps {
 export const ReviewItemModal = (props: ReviewItemModalProps) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-    const [ratingValue, setRatingValue] = React.useState<number | null>(3);
+    const [ratingValue, setRatingValue] = React.useState<number | null>(null);
 
     const [isSuccessSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
 
@@ -40,6 +40,11 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
                 () => setSuccessSnackbarOpen(true)
             );
         }
+    };
+
+    const closeWithoutRating = () => {
+        setRatingValue(null);
+        formSubmit();
     };
 
     const handleCloseSnackbar = (event?: React.SyntheticEvent, reason?: string) => {
@@ -67,7 +72,7 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button autoFocus onClick={formSubmit} color={"primary"}>
+                        <Button autoFocus onClick={closeWithoutRating} color={"primary"}>
                             Ne pas noter
                         </Button>
                         <Button onClick={formSubmit} color="primary" autoFocus>
@@ -82,7 +87,11 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
         <div>
             <Snackbar open={isSuccessSnackbarOpen} autoHideDuration={5000} onClose={handleCloseSnackbar}>
                 <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
-                    Vote enregistré <span role="img" aria-label="Urne de vote">🗳</span>
+                    {ratingValue ? (
+                        <div>Vote enregistré <span role="img" aria-label="Urne de vote">🗳</span></div>
+                    ) : (
+                        <div>Marqué comme vu ! <span role="img" aria-label="Lunette">🤓</span></div>
+                    )}
                 </MuiAlert>
             </Snackbar>
             {renderReviewForm()}

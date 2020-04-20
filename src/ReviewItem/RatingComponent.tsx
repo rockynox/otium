@@ -31,7 +31,8 @@ export const RatingComponent = (props: RatingProps) => {
                     setHover(newHover);
                 }}
             />
-            {props.ratingValue !== null && <Box ml={2}>{labels[hover !== -1 ? hover : props.ratingValue]}</Box>}
+            {props.ratingValue ? <Box ml={2}>{labels[hover !== -1 ? hover : props.ratingValue]}</Box> :
+                <Box ml={2}>{labels[hover]}</Box>}
         </div>
     );
 };

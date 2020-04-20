@@ -9,6 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
 import {Button} from "@material-ui/core";
+import {Rating} from "@material-ui/lab";
 
 type ItemListProps = {
     connectedUser: User
@@ -51,20 +52,42 @@ export const ItemList = (props: ItemListProps) => {
         return item.viewedBy && item.viewedBy.find((itemViewer) => itemViewer.viewer.id === connectedUser.id);
     };
 
+    const getAverageItemRating = () => {
+        if (!props.item.viewedBy) {
+            return null;
+        }
+        const numberOfRating = props.item.viewedBy
+            .map(itemViewer => itemViewer.rating)
+            .filter((rating) => rating != null)
+            .length;
+        const ratingSum = props.item.viewedBy
+            .map(itemViewer => itemViewer.rating)
+            .filter((rating) => rating != null)
+            // @ts-ignore
+            .reduce((a, b) => a + b, 0);
+        return ratingSum ? ratingSum / numberOfRating : null;
+    };
+
     if (props.item.type === Item_TYPE.movie) {
         const movieItem = props.item.payload as Movie;
+        const itemAverageRating = getAverageItemRating();
         return (
             <Card className="card" elevation={2}>
                 <CardContent className="content">
                     <Box mb={1}>
                         <h3 className="heading">{movieItem.title}</h3>
                         <span className="release-date">({movieItem.release_date})</span>
-                        {/*<Rating*/}
-                        {/*    name={"rating"}*/}
-                        {/*    value={2}*/}
-                        {/*    className="rating"*/}
-                        {/*    size={"small"}*/}
-                        {/*/>*/}
+                        {itemAverageRating &&
+                        <span>
+                          <Rating
+                              name={"rating"}
+                              value={itemAverageRating}
+                              readOnly
+                              className="rating"
+                              size={"small"}
+                          />{itemAverageRating}
+                        </span>
+                        }
                     </Box>
                     <p className="body">
                         {movieItem.overview || "Pas de résumé disponible."}
