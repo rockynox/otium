@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Audit, Item} from "../types/Item";
+import {Audit, Item, Item_TYPE} from "../types/Item";
 import {databaseReference} from "../Database/firebaseConfiguration";
 import {MovieDBResult} from "../types/theMovieDB";
 import {MovieSelector} from "./MovieSelector";
@@ -31,7 +31,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
         if (selectedItem) {
             addItem(
                 new Item(
-                    "movie",
+                    Item_TYPE.movie,
                     selectedItem,
                     new Audit(props.connectedUser.id, props.connectedUser.name)
                 )

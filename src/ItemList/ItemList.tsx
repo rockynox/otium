@@ -1,5 +1,5 @@
 import React from "react";
-import {Item} from "../types/Item";
+import {Item, Item_TYPE} from "../types/Item";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
 import {databaseReference} from "../Database/firebaseConfiguration";
@@ -48,10 +48,10 @@ export const ItemList = (props: ItemListProps) => {
     };
 
     const hasBeenViewedByUser = (item: Item, connectedUser: User) => {
-        return item.viewedBy && item.viewedBy.find((user) => user.id === connectedUser.id);
+        return item.viewedBy && item.viewedBy.find((itemViewer) => itemViewer.viewer.id === connectedUser.id);
     };
 
-    if (props.item.type === "movie") {
+    if (props.item.type === Item_TYPE.movie) {
         const movieItem = props.item.payload as Movie;
         return (
             <Card className="card" elevation={2}>

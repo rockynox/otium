@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Item} from "../types/Item";
+import {Item, ItemViewer} from "../types/Item";
 import {Movie} from "../types/theMovieDB";
 import {User} from "../types/User";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -16,12 +16,12 @@ import {
     useTheme
 } from "@material-ui/core";
 import {RatingComponent} from "./RatingComponent";
+import {addOnMaybeArray} from "../Database/databaseUtils";
 
 interface ReviewItemModalProps {
     connectedUser: User
-    isModalOpen: boolean
-    setItemToReview: (itemToReview: Item | undefined) => void
     itemToReview: Item | undefined
+    handleReview: (itemReviewed: Item) => Promise<any>
 }
 
 export const ReviewItemModal = (props: ReviewItemModalProps) => {
@@ -29,30 +29,17 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const [ratingValue, setRatingValue] = React.useState<number | null>(3);
 
-
     const [isSuccessSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
 
-    const addRating = async (rating: number, itemToRate: Item) => {
-        //TODO
-        // return databaseReference.items.push().set(newItem);
-        return;
-    };
-
     const formSubmit = () => {
-        if (ratingValue && props.itemToReview) {
-            addRating(ratingValue, props.itemToReview)
-                .then(() => {
-                    setSuccessSnackbarOpen(true);
-                })
-                .catch(() => {
-                    console.log("Can't add rating");
-                });
+        if (props.itemToReview) {
+            const newViewer = new ItemViewer(props.connectedUser, ratingValue);
+            let itemReviewed = props.itemToReview;
+            itemReviewed.viewedBy = addOnMaybeArray(props.itemToReview.viewedBy, newViewer);
+            props.handleReview(itemReviewed).then(
+                () => setSuccessSnackbarOpen(true)
+            );
         }
-        handleCloseModal();
-    };
-
-    const handleCloseModal = () => {
-        props.setItemToReview(undefined);
     };
 
     const handleCloseSnackbar = (event?: React.SyntheticEvent, reason?: string) => {
@@ -80,7 +67,7 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button autoFocus onClick={handleCloseModal} color={"primary"}>
+                        <Button autoFocus onClick={formSubmit} color={"primary"}>
                             Ne pas noter
                         </Button>
                         <Button onClick={formSubmit} color="primary" autoFocus>
@@ -93,7 +80,7 @@ export const ReviewItemModal = (props: ReviewItemModalProps) => {
     };
     return (
         <div>
-            <Snackbar open={isSuccessSnackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+            <Snackbar open={isSuccessSnackbarOpen} autoHideDuration={5000} onClose={handleCloseSnackbar}>
                 <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
                     Vote enregistré <span role="img" aria-label="Urne de vote">🗳</span>
                 </MuiAlert>

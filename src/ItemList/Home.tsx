@@ -29,15 +29,32 @@ export const Home = (props: HomeProps) => {
         };
     }, []);
 
-    const handleViewed = (item: Item) => {
+    function isConnectedUserInViewers(item: Item) {
+        if (item.viewedBy) {
+            return item.viewedBy.find((itemViewer) => itemViewer.viewer.id === props.connectedUser.id);
+        }
+        return false;
+    }
+
+    function removeViewerAndSave(item: Item, viewerToRemove: User) {
         let itemViewers = item.viewedBy ? item.viewedBy : [];
-        if (itemViewers.find((user) => user.id === props.connectedUser.id)) {
-            itemViewers = itemViewers.filter((user) => user.id !== props.connectedUser.id);
+        itemViewers = itemViewers.filter((itemViewer) => itemViewer.viewer.id !== viewerToRemove.id);
+        databaseReference.items.child(item.id + "/viewedBy").set(itemViewers);
+    }
+
+    const handleReview = (item: Item): Promise<any> => {
+        return databaseReference.items.child(item.id).set(item)
+            .then(
+                () => setItemToReview(undefined)
+            );
+    };
+
+    const handleViewed = (item: Item) => {
+        if (isConnectedUserInViewers(item)) {
+            removeViewerAndSave(item, props.connectedUser);
         } else {
-            itemViewers = [...itemViewers, props.connectedUser];
             setItemToReview(item);
         }
-        databaseReference.items.child(item.id + "/viewedBy").set(itemViewers);
     };
 
     const renderItems = () =>
@@ -55,9 +72,8 @@ export const Home = (props: HomeProps) => {
         <div className="container">
             <AddItemModal connectedUser={props.connectedUser}/>
             <ReviewItemModal connectedUser={props.connectedUser}
-                             isModalOpen={itemToReview !== undefined}
                              itemToReview={itemToReview}
-                             setItemToReview={setItemToReview}
+                             handleReview={handleReview}
             />
             {isLoading ?
                 <LinearProgress/> :
