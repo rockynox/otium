@@ -14,7 +14,7 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "cross-fetch": "latest",
-    "firebase": "^7.14.0",
+    "firebase": "^10.9.0",
     "lodash": "latest",
     "materialize-css": "^1.0.0",
     "react": "^16.13.1",
